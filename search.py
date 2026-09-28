@@ -88,6 +88,7 @@ def depthFirstSearch(problem: SearchProblem):
     """
     visited = set()
     s = util.Stack()
+    
     s.push((problem.getStartState(),[]))
     while (s.isEmpty() == 0):
         u,path = s.pop()
@@ -104,15 +105,16 @@ def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
     visited = set()
     q = util.Queue()
+
+    visited.add(problem.getStartState())
     q.push((problem.getStartState(),[]))
     while (q.isEmpty() == 0):
         u,path = q.pop()
-        if u not in visited:
-            visited.add(u)
         if problem.isGoalState(u):
             return path
         for v,action,cost in problem.getSuccessors(u):
             if v not in visited :
+                visited.add(v)
                 q.push((v,path + [action]))
     util.raiseNotDefined()
 
