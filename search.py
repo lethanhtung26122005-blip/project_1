@@ -115,12 +115,25 @@ def breadthFirstSearch(problem: SearchProblem):
         for v,action,cost in problem.getSuccessors(u):
             if v not in visited :
                 visited.add(v)
-                q.push((v,path + [action]))
+                newpath = path + [action]
+                q.push((v,newpath))
     util.raiseNotDefined()
-
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
-    "*** YOUR CODE HERE ***"
+    visited = set()
+    s = util.PriorityQueue()
+    s.push((problem.getStartState(),[]),0)
+    while (s.isEmpty() == 0):
+        u,path = s.pop()
+        if u in visited:
+            continue
+        visited.add(u)
+        if problem.isGoalState(u):
+            return path
+        for v,action,cost in problem.getSuccessors(u):
+            if v not in visited:
+                newpath = path + [action]
+                s.push((v,newpath),problem.getCostOfActions(newpath))
     util.raiseNotDefined()
 
 def nullHeuristic(state, problem=None):
@@ -132,7 +145,22 @@ def nullHeuristic(state, problem=None):
 
 def aStarSearch(problem: SearchProblem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
-    "*** YOUR CODE HERE ***"
+    visited = set()
+    q = util.PriorityQueue()
+
+    q.push((problem.getStartState(),[]),0)
+
+    while(q.isEmpty() == 0):
+        u,path = q.pop()
+        if u in visited:
+            continue
+        visited.add(u)
+        if problem.isGoalState(u):
+            return path
+        for v,action,cost in problem.getSuccessors(u):
+            if v not in visited:
+                newpath = path + [action]
+                q.push((v,newpath),(problem.getCostOfActions(newpath)+ heuristic(v,problem)))
     util.raiseNotDefined()
 
 
